@@ -34,7 +34,7 @@ export default class Item extends Component {
     return (    
       <li style={{backgroundColor: mouse ? '#ddd' : 'white'}} onMouseEnter={this.handleMouse(true)} onMouseLeave={this.handleMouse(false)}>
         <label>
-          <input type="checkbox" defaultChecked={done} onChange={this.handleCheck(id)}/>
+          <input type="checkbox" checked={done} onChange={this.handleCheck(id)}/>
           <span>{name}</span>
         </label>
         <button className="btn btn-danger" style={{ display: mouse ? '' :'none'}} onClick={this.handleDelete(id)}>删除</button>
