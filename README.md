@@ -1,3 +1,16 @@
+1. 页面样式 + 组件拆分 : JsX 中样式class 改为className, tyle内容部分需要两层大括号
+2. 父子组件状态共享 及数据传递
+   a.状态在哪里，操作状态的方法就在哪里
+   b.父子组件都需要使用的状态，放到父组件当中
+   c.子组件修改父组件都数据，通过父组件从props中传递方法给子组件
+   d.父组件给子组件传递【数据】，通过props传递
+   e.子组件给父组件传递【数据】，通过props传递，要求父组件提前给子组件一个函数
+3. 页面事件处理
+   a.注意defaultChecked方法和checked方法的区别，类似的还有defaultValue和value
+   b.考虑各种交互场景中的边界情况，例如全部删除之后，总量的显示等
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
