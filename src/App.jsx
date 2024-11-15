@@ -11,8 +11,6 @@ export default class App extends Component {
    
   // initialValue = sessionStorage.getItem('todos') ? JSON.parse(sessionStorage.getItem('todos')) : null;
 
-  //输入框失去焦点
-   //组件传递数据
   //存储数据到state
    state = {todos: [
     {id:'001', name:'eating', done: true},
@@ -27,7 +25,6 @@ export default class App extends Component {
   // value = sessionStorage.getItem('key');
   // console.log(value); // 输出 'value'
 
-
    addTodo = (todoObj) => {
     const {todos} = this.state
     const newTodos = [todoObj, ...todos]
@@ -36,16 +33,18 @@ export default class App extends Component {
 
    removeTodo = (id) => {
     const {todos} = this.state
-    const newTodos = todos.filter((todo) => {
+    // eslint-disable-next-line array-callback-return
+    const newTodos = todos.filter( todo => {
       if(todo.id !== id) return true
     })
-    const newTodos2 = todos.map((todo) => {
-      if(todo.id !== id) {
-        return todo
-      }
-      else{
-        return null
-      }
+    this.setState({todos: newTodos})
+   }
+
+   deleteAllDone = () => {
+    const {todos} = this.state
+    // eslint-disable-next-line array-callback-return
+    const newTodos = todos.filter( todo => {
+      return !todo.done
     })
     this.setState({todos: newTodos})
    }
@@ -58,6 +57,14 @@ export default class App extends Component {
     })
     this.setState({todos: newTodos})
    }
+
+   checkAll = (done) => {
+    const {todos} = this.state
+    const newTodos = todos.map( todo =>{
+      return {...todo, done}
+    })
+    this.setState({todos: newTodos})
+   }
   
   render() {
     const {todos} = this.state
@@ -66,7 +73,7 @@ export default class App extends Component {
       <div className="todo-wrap">
         <Header addTodo = {this.addTodo}/>
         <List todos = {todos} updateTodo={this.updateTodo} removeTodo = {this.removeTodo}/>
-        <Footer/>
+        <Footer todos = {todos} checkAll={this.checkAll} deleteAllDone={this.deleteAllDone}/>
       </div>
     </div>
   )
