@@ -29,7 +29,6 @@ export default class App extends Component {
     const {todos} = this.state
     const newTodos = todos.map( (todo) => {
       if(todo.id === id){
-        console.log('todoId',todo.id)
         return {...todo, done:done}
       }
       //这里一定要返回，否则出现undifined
