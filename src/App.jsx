@@ -37,6 +37,32 @@ export default class App extends Component {
     this.setState({todos: newTodos})
   }
 
+  updateAllTodos = (done) =>{
+    const {todos} = this.state
+    const newTodos = todos.map( (todo) => {
+      return {...todo, done:done};
+    })
+    this.setState({todos: newTodos})
+  }
+
+  deleteTodo = (id)=> {
+    const {todos} = this.state
+    const newTodos = todos.filter( (todo) => {
+      //这里一定要返回，否则出现undifined
+      return todo.id !== id;
+    })
+    this.setState({todos: newTodos})
+  }
+
+  deleteCheckedTodos = ()=> {
+    const {todos} = this.state
+    const newTodos = todos.filter( (todo) => {
+      //这里一定要返回，否则出现undifined
+      return todo.done === false;
+    })
+    this.setState({todos: newTodos})
+  }
+
   render(){
     const {todos} = this.state
     // this.setState({todos:todos})
@@ -45,8 +71,8 @@ export default class App extends Component {
       <div className="todo-container">
         <div className="todo-wrap">
           <Header addTodo={this.addTodo}/>
-          <List todos={todos} updateTodos={this.updateTodos}/>
-          <Footer/>
+          <List todos={todos} updateTodos={this.updateTodos} deleteTodo={this.deleteTodo}/>
+          <Footer todos={todos} deleteCheckedTodos={this.deleteCheckedTodos} updateAllTodos={this.updateAllTodos}/>
         </div>
       </div>
     )
