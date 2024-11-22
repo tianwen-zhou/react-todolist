@@ -14,53 +14,49 @@ export default class App extends Component {
       };
     }
 
-    // // 加载 ToDo 列表
-    // fetchTodos = async () => {
-    //   try {
-    //     const todos = await getTodos();
-    //     this.setState({ todos });
-    //     console.log(todos)
-    //   } catch (error) {
-    //     console.error("Error fetching todos:", error);
-    //   }
-    // };
-
     // 组件加载后调用 API 获取 ToDo 列表
   async componentDidMount() {
     try {
-      const todoObjs = await getTodos();
-      const todos = todoObjs.map( (todoObj)=> {
-        return  {id: todoObj.id, name:todoObj.title, done: todoObj.isCompleted}
-      })
+      const todos = await getTodos();
+      // const todos = todoObjs.map( (todoObj)=> {
+      //   return  {id: todoObj.id, name:todoObj.title, done: todoObj.isCompleted}
+      // })
       this.setState({ todos });
     } catch (error) {
       console.error("Error fetching todos:", error);
     }
   }
 
-  //     // 创建 ToDo
-  //  handleCreate = async () => {
-  //   const newTodo = { title, isCompleted };
-  //   try {
-  //     const createdTodo = await createTodo(newTodo);
-  //     setTodos([...todos, createdTodo]);
-  //     setTitle("");
-  //     setIsCompleted(false);
-  //   } catch (error) {
-  //     console.error("Error creating todo:", error);
-  //   }
-  // };
+   // 创建 ToDo
+    addTodo = async (title) => {
+    const newTodo = { title: title, isCompleted: false };
+    try {
+      const createdTodo = await createTodo(newTodo);
+      const newTodos = [...this.state.todos, createdTodo];
+      this.setState({todos: newTodos});
+    } catch (error) {
+      console.error("Error creating todo:", error);
+    }
+  };
 
-  // // 更新 ToDo
-  //  handleUpdate = async (id) => {
-  //   const updatedTodo = { title: "Updated Title", isCompleted: true };
-  //   try {
-  //     const result = await updateTodo(id, updatedTodo);
-  //     setTodos(todos.map((todo) => (todo.id === id ? result : todo)));
-  //   } catch (error) {
-  //     console.error("Error updating todo:", error);
-  //   }
-  // };
+  // 更新 ToDo
+  updateTodos = async (id, updatedTodo) => {
+    const {todos} = this.state
+    const newTodos = todos.map( (todo) => {
+      if(todo.id === id){
+        return {...todo, isCompleted: updatedTodo.isCompleted}
+      }
+      //这里一定要返回，否则出现undifined
+      return todo;
+    })
+    this.setState({todos: newTodos})
+    
+    try {
+      await updateTodo(id, updatedTodo);
+    } catch (error) {
+      console.error("Error updating todo:", error);
+    }
+  };
 
   // // 删除 ToDo
   //  handleDelete = async (id) => {
@@ -81,23 +77,23 @@ export default class App extends Component {
   //   ],
   // };
 
-   addTodo = (todoObj) =>{
-     const {todos} = this.state
-     const newTodos = [todoObj, ...todos]
-     this.setState({todos: newTodos})
-   }
+  //  addTodo = (todoObj) =>{
+  //    const {todos} = this.state
+  //    const newTodos = [todoObj, ...todos]
+  //    this.setState({todos: newTodos})
+  //  }
 
-   updateTodos = (id, done) =>{
-    const {todos} = this.state
-    const newTodos = todos.map( (todo) => {
-      if(todo.id === id){
-        return {...todo, done:done}
-      }
-      //这里一定要返回，否则出现undifined
-      return todo;
-    })
-    this.setState({todos: newTodos})
-  }
+  //  updateTodos = (id, done) =>{
+  //   const {todos} = this.state
+  //   const newTodos = todos.map( (todo) => {
+  //     if(todo.id === id){
+  //       return {...todo, done:done}
+  //     }
+  //     //这里一定要返回，否则出现undifined
+  //     return todo;
+  //   })
+  //   this.setState({todos: newTodos})
+  // }
 
   updateAllTodos = (done) =>{
     const {todos} = this.state

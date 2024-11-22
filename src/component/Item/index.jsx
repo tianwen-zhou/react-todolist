@@ -12,8 +12,9 @@ export default class Item extends Component {
   }
 
   handleCheck = (event)=> {
-    const {id} = this.props
-    this.props.updateTodos(id, event.target.checked)
+    const {id, title} = this.props
+    const updatedTodo =  { title: title, isCompleted: event.target.checked };
+    this.props.updateTodos(id, updatedTodo)
   }
 
   // handleMouse = (flag)=> {
@@ -35,14 +36,14 @@ export default class Item extends Component {
 
 
   render() {
-    const {name, done} = this.props
+    const {title, isCompleted} = this.props
     const {flag} = this.state
     // console.log('showFlag',showFlag)
     return (
       <li style={{backgroundColor: flag ? '#ddd': 'white'}} onMouseEnter={this.handleMouse(true)} onMouseLeave={this.handleMouse(false)}>
           <label>
-            <input type="checkbox" checked={done} onChange={this.handleCheck}/>
-            <span>{name}</span>
+            <input type="checkbox" checked={isCompleted} onChange={this.handleCheck}/>
+            <span>{title}</span>
           </label>
           <button className="btn btn-danger" style={{display: flag ? '': 'none'}} onClick={this.handleDelete}>删除</button>
       </li>
