@@ -58,49 +58,20 @@ export default class App extends Component {
     }
   };
 
-  // // 删除 ToDo
-  //  handleDelete = async (id) => {
-  //   try {
-  //     await deleteTodo(id);
-  //     setTodos(todos.filter((todo) => todo.id !== id));
-  //   } catch (error) {
-  //     console.error("Error deleting todo:", error);
-  //   }
-  // };
-
-  // state = {
-  //   todos: [
-  //     {id:'001', name:'coding', done: true},
-  //     {id:'002', name:'sleeping', done: true},
-  //     {id:'003', name:'reading', done: false},
-  //     {id:'004', name:'talking', done: false},
-  //   ],
-  // };
-
-  //  addTodo = (todoObj) =>{
-  //    const {todos} = this.state
-  //    const newTodos = [todoObj, ...todos]
-  //    this.setState({todos: newTodos})
-  //  }
-
-  //  updateTodos = (id, done) =>{
-  //   const {todos} = this.state
-  //   const newTodos = todos.map( (todo) => {
-  //     if(todo.id === id){
-  //       return {...todo, done:done}
-  //     }
-  //     //这里一定要返回，否则出现undifined
-  //     return todo;
-  //   })
-  //   this.setState({todos: newTodos})
-  // }
-
-  updateAllTodos = (done) =>{
+  updateAllTodos = async (done) =>{
     const {todos} = this.state
     const newTodos = todos.map( (todo) => {
-      return {...todo, done:done};
+      return {...todo, isCompleted:done};
     })
     this.setState({todos: newTodos})
+
+    try {
+      newTodos.map((todo) => {
+        updateTodo(todo.id, todo);
+      })
+    } catch (error) {
+      console.error("Error updating todo:", error);
+    }
   }
 
   deleteTodo = (id)=> {
@@ -110,15 +81,31 @@ export default class App extends Component {
       return todo.id !== id;
     })
     this.setState({todos: newTodos})
+    try {
+      deleteTodo(id)
+    } catch (error) {
+      console.error("Error updating todo:", error);
+    }
   }
 
   deleteCheckedTodos = ()=> {
     const {todos} = this.state
     const newTodos = todos.filter( (todo) => {
       //这里一定要返回，否则出现undifined
-      return todo.done === false;
+      return todo.isCompleted === false;
     })
     this.setState({todos: newTodos})
+    
+    const delTodos = todos.filter( (todo) => {
+      return todo.isCompleted === true;
+    })
+    try {
+      delTodos.map( (todo) => {
+        deleteTodo(todo.id)
+      })
+    } catch (error) {
+      console.error("Error updating todo:", error);
+    }
   }
 
   render(){

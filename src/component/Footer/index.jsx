@@ -11,7 +11,7 @@ export default class Footer extends Component {
   
   render() {
     const {todos} = this.props
-    const doneCount = todos.reduce((pre, todo) => {return pre + (todo.done ? 1 : 0) }, 0)
+    const doneCount = todos.reduce((pre, todo) => {return pre + (todo.isCompleted ? 1 : 0) }, 0)
     return (
       <div className="todo-footer">
           <label>
